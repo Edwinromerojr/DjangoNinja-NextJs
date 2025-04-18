@@ -1,7 +1,9 @@
 "use client";
 // -> url -> /login
+// import { cookies } from 'next/headers'
 
-const LOGIN_URL = "http://127.0.0.1:8000/api/token/pair";
+// const LOGIN_URL = "http://127.0.0.1:8000/api/token/pair";
+const LOGIN_URL = "/api/login/";
 
 export default function Page() {
   async function handleSubmit(event) {
