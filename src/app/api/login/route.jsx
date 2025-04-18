@@ -2,18 +2,39 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function POST(request) {
-    const data = await request.json();
-    console.log(data);
+const DJANGO_API_LOGIN_URL = "http://127.0.0.1:8000/api/token/pair";
 
-    // const authToken = cookies().get("auth-token");
-    cookies().set({
+export async function POST(request) {
+    const cookieStore = await cookies();
+    const myAuthToken = cookieStore.get('auth-token')
+    console.log(myAuthToken.value)
+
+    const requestData = await request.json();
+    const jsonData = JSON.stringify(requestData);
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonData,
+    };
+    const response = await fetch(DJANGO_API_LOGIN_URL, requestOptions);
+    const responseData = await response.json();
+    if (response.ok) {
+      console.log("Login successful");
+      const authToken = responseData.access;
+      cookieStore.set({
         name: "auth-token",
-        value: "abc",
+        value: authToken,
         httpOnly: true, // limit client-side js
         sameSite: "strict",
         secure: process.env.NODE_ENV !== "development",
         maxAge: 3600,
     })
-  return NextResponse.json({"hello": "world", "cookie": {authToken}}, { status: 200 });
+
+    }
+
+    // const authToken = cookies().get("auth-token");
+
+  return NextResponse.json({"hello": "world"}, { status: 200 });
 }
