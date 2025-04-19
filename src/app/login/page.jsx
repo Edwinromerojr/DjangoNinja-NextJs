@@ -1,11 +1,11 @@
 "use client";
 // -> url -> /login
-// import { cookies } from 'next/headers'
-
-// const LOGIN_URL = "http://127.0.0.1:8000/api/token/pair";
+import { useRouter } from "next/navigation";
 const LOGIN_URL = "/api/login/";
 
 export default function Page() {
+  const router = useRouter();
+
   async function handleSubmit(event) {
     event.preventDefault();
     console.log(event, event.target);
@@ -21,10 +21,9 @@ export default function Page() {
       body: jsonData,
     };
     const response = await fetch(LOGIN_URL, requestOptions);
-    const rData = await response.json();
-    console.log(rData);
     if (response.ok) {
-      console.log("Login successful");
+      console.log("logged in");
+      router.replace("/");
     }
   }
 
