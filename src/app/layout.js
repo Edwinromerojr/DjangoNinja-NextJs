@@ -8,6 +8,8 @@ import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
+import BaseLayout from "@/components/layout/BaseLayout";
+
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -43,7 +45,11 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <BaseLayout className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col bg-muted/40">
+              {children}
+            </BaseLayout>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
